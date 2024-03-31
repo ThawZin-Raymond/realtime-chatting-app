@@ -1,14 +1,20 @@
 //Login Page
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login Attempt: ", username, password);
+    console.log("Login Attempt: ", email, password);
   };
+
+  const navigateToSignupPage = () => {
+    navigate('/signup');
+  }
 
   return (
     <div>
@@ -33,6 +39,8 @@ function LoginPage() {
           />
         </div>
         <button type="submit">Log In</button>
+        <button type="submit" onClick={navigateToSignupPage}>Sign up</button>
+
       </form>
     </div>
   );
