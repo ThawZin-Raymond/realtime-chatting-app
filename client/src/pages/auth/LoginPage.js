@@ -1,6 +1,7 @@
 //Login Page
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -9,7 +10,13 @@ function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login Attempt: ", email, password);
+    try {
+      const response = await axios.post('api/login', { email, password });
+      console.log('Login Successful', response.data);
+      navigate('/some-protected-route');
+    } catch (error) {
+      console.error('Login failed', error.response.data);
+    }
   };
 
   const navigateToSignupPage = () => {

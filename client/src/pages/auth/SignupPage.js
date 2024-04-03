@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+
 
 function SignupPage() {
   const [email, setEmail] = useState("");
@@ -9,7 +11,12 @@ function SignupPage() {
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    console.log("Signing up with:", username, email, password);
+    try{
+      const response = await axios.post('/api/signup', { username, email, password});
+      console.log('Signup successful', response.data);
+    } catch (error) {
+      console.error("Signup failed", error.response.data ? error.response.data :'Unknown error');
+    }
   };
 
   const navigateToLoginPage = () => {
