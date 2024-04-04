@@ -1,14 +1,23 @@
 const express = require("express");
+const http = require("http");
+const socketIo = require("socket.io");
+
 const app = express();
+const server = http.createServer(app);
+const io = socketIo(server);
+
+io.on("connection", (socket) => {
+  console.log("New client connected");
+
+  socket.on("sendMessage", (message) => {
+    console.log(message);
+    io.emit("receiveMessage", message);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('Client disconnected');
+  });
+});
+
 const PORT = process.env.PORT || 3001;
-
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
-app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}`);
-});
-
-const authRoutes = require('./routes/authRoutes');
-app.use('/api', authRoutes);
+server.listen(PORT, () => console.log('Server running on port ${PORT}'));
